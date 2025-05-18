@@ -58,6 +58,7 @@ public class ControlProductsConsoleUI {
                 break;
             case 6:
                 getCriticalLevelProducts();
+                break;
             case 0:
                 System.out.println("Выход из программы...");
                 break;
@@ -71,8 +72,6 @@ public class ControlProductsConsoleUI {
         int id = Integer.parseInt(scanner.nextLine());
         System.out.print("Введите название продукта: ");
         String productName = scanner.nextLine();
-        System.out.print("Введите минимальный запас продукта: ");
-        int minStock = Integer.parseInt(scanner.nextLine());
         System.out.print("Введите оптимальный запас продукта: ");
         int optimalStock = Integer.parseInt(scanner.nextLine());
         System.out.print("Введите критический уровень продукта: ");
@@ -82,8 +81,7 @@ public class ControlProductsConsoleUI {
         System.out.println("");
 
         try {
-            controlProductsService.addProduct(new Inventory(id, minStock, optimalStock, criticalLevel, quantity), new Product(id, productName));
-            System.out.println("");
+            controlProductsService.addProduct(new Inventory(id, optimalStock, criticalLevel, quantity), new Product(id, productName));
         } catch (Exception e) {
             System.out.println("Ошибка при создании продукта: " + e.getMessage());
         }
@@ -117,7 +115,7 @@ public class ControlProductsConsoleUI {
     }
 
     public void generateReport() {
-        System.out.print("Введите ID инвентаризации: ");
+        System.out.print("Введите ID продукта: ");
         int id = Integer.parseInt(scanner.nextLine());
         Inventory inventory = inventoryRepository.findById(id).get();
 
@@ -144,13 +142,9 @@ public class ControlProductsConsoleUI {
     }
 
     public void getCriticalLevelProducts() {
-        System.out.print("Введите ID продукта: ");
-        int id = Integer.parseInt(scanner.nextLine());
-        Inventory inventory = inventoryRepository.findById(id).get();
         System.out.println("");
-
         try {
-            controlProductsService.trackProductsWithCriticalLevel(inventory);
+            controlProductsService.trackProductsWithCriticalLevel();
         } catch (Exception e) {
             System.out.println("Ошибка при получении критического уровня продуктов: " + e.getMessage());
         }

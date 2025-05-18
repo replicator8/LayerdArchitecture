@@ -19,7 +19,7 @@ public class Main {
         ControlProductsService controlProductsService = new ControlProductsService(inventoryRepository, productRepository);
 
         // Добавление тестовых данных
-        Inventory inventory = new Inventory(0, 100, 150, 50, 110);
+        Inventory inventory = new Inventory(0, 100, 50, 150);
         Product product = new Product(0, "Вода");
         controlProductsService.addProduct(inventory, product);
 

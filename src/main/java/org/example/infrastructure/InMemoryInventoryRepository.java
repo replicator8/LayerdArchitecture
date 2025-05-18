@@ -19,6 +19,9 @@ public class InMemoryInventoryRepository implements IInventoryRepository {
         if (product.getExpirationDate().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Продукт просрочен!");
         }
+        if (inventories.containsKey(inventory.getProductId())) {
+            throw new IllegalArgumentException("Инвентаризация с таким продуктом уже существует!");
+        }
         inventories.put(inventory.getProductId(), inventory);
     }
 
@@ -46,12 +49,16 @@ public class InMemoryInventoryRepository implements IInventoryRepository {
         if (!inventories.containsKey(inventory.getProductId())) {
             throw new IllegalArgumentException("Такого продукта нет");
         }
-        inventories.remove(inventory);
+        inventories.remove(inventory.getProductId());
+        System.out.println("Продукт успешно списан!");
     }
 
     @Override
-    public boolean trackProductsWithCriticalLevel(Inventory inventory, int level) {
-        return inventory.getCriticalLevel() > level;
+    public void trackProductsWithCriticalLevel() {
+        for (Inventory inventory: inventories.values()) {
+            String result = inventory.getQuantity() < inventory.getCriticalLevel() ? "критический" : "хороший";
+            System.out.println("Инвентаризация с ID: " + inventory.getProductId() + " имеет " + result + " уровень запаса!");
+        }
     }
 
     @Override

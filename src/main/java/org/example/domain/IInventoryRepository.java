@@ -9,6 +9,6 @@ public interface IInventoryRepository {
     List<Inventory> findAllInventories();
     void writeOffProductsDueUsed(int productId, int count);
     void removeInventory(Inventory inventory);
-    boolean trackProductsWithCriticalLevel(Inventory inventory, int level);
+    void trackProductsWithCriticalLevel();
     void updateRealStock(Inventory inventory, int stock);
 }

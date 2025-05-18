@@ -4,7 +4,6 @@ import org.example.domain.IInventoryRepository;
 import org.example.domain.IProductRepository;
 import org.example.domain.Inventory;
 import org.example.domain.Product;
-
 import java.time.LocalDateTime;
 
 public class ControlProductsService {
@@ -24,7 +23,7 @@ public class ControlProductsService {
 
     public void writeOffProductsDueUsed(int productId, int count) {
         inventoryRepository.writeOffProductsDueUsed(productId, count);
-        System.out.println("Продукт списан из-за использования");
+        System.out.println("Часть продукта списана из-за использования!");
     }
 
     public void writeOffExpiredProducts(Inventory inventory) {
@@ -35,7 +34,7 @@ public class ControlProductsService {
             product.setExpirationDate(LocalDateTime.now().minusDays(1));
             productRepository.addProduct(product);
             inventoryRepository.removeInventory(inventory);
-            System.out.println("Продукт теперь просрочен!");
+//            System.out.println("Продукт теперь просрочен!");
         }
     }
 
@@ -45,18 +44,15 @@ public class ControlProductsService {
         System.out.println(inventory.getCurrentStocks(product.getName()));
     }
 
-    public void trackProductsWithCriticalLevel(Inventory inventory) {
-        if (inventoryRepository.trackProductsWithCriticalLevel(inventory, inventory.getQuantity())) {
-            System.out.println("Продукт с критическим уровнем запаса");
-        } else {
-            System.out.println("Продукт с хорошем уровнем запаса");
-        }
+    public void trackProductsWithCriticalLevel() {
+        inventoryRepository.trackProductsWithCriticalLevel();
     }
 
     public void makeInventory(Inventory inventory, int realQuantity) {
         if (realQuantity < 0) {
-            throw new IllegalArgumentException("Отрицаткьного количества быть не может!");
+            throw new IllegalArgumentException("Отрицательного количества быть не может!");
         }
         inventoryRepository.updateRealStock(inventory, realQuantity);
+        System.out.println("Инвентаризация успешно проведена!");
     }
 }
